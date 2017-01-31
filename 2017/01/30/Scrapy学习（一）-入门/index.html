@@ -42,7 +42,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="学习," />
+  <meta name="keywords" content="学习,Scrapy," />
 
 
 
@@ -58,16 +58,16 @@
 
 
 
-<meta name="description" content="HashMapHashMap的碰撞处理HashMap通过hashCode()方法来确定元素存储的bucketIndex位置，不同的Key有概率hash是相同的。两个不同Key的hash值相同时，HashMap通过单链表方式，将新元素加入链表表头，通过next指向原有元素。">
+<meta name="description" content="快速入门接上篇Scrapy学习（一） 安装，安装后，我们利用一个简单的例子来熟悉如何使用Scrapy创建一个爬虫项目。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="HashMap,Hashtable,ConcurrentHashMap,SynchronizedMap的原理与区别">
-<meta property="og:url" content="http://yoursite.com/2016/12/07/了解HashMap/index.html">
+<meta property="og:title" content="Scrapy学习（二） 入门">
+<meta property="og:url" content="http://yoursite.com/2017/01/30/Scrapy学习（一）-入门/index.html">
 <meta property="og:site_name" content="四畳半神话大系">
-<meta property="og:description" content="HashMapHashMap的碰撞处理HashMap通过hashCode()方法来确定元素存储的bucketIndex位置，不同的Key有概率hash是相同的。两个不同Key的hash值相同时，HashMap通过单链表方式，将新元素加入链表表头，通过next指向原有元素。">
-<meta property="og:updated_time" content="2016-12-13T13:11:35.169Z">
+<meta property="og:description" content="快速入门接上篇Scrapy学习（一） 安装，安装后，我们利用一个简单的例子来熟悉如何使用Scrapy创建一个爬虫项目。">
+<meta property="og:updated_time" content="2017-01-31T09:59:51.564Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="HashMap,Hashtable,ConcurrentHashMap,SynchronizedMap的原理与区别">
-<meta name="twitter:description" content="HashMapHashMap的碰撞处理HashMap通过hashCode()方法来确定元素存储的bucketIndex位置，不同的Key有概率hash是相同的。两个不同Key的hash值相同时，HashMap通过单链表方式，将新元素加入链表表头，通过next指向原有元素。">
+<meta name="twitter:title" content="Scrapy学习（二） 入门">
+<meta name="twitter:description" content="快速入门接上篇Scrapy学习（一） 安装，安装后，我们利用一个简单的例子来熟悉如何使用Scrapy创建一个爬虫项目。">
 
 
 
@@ -95,13 +95,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/12/07/了解HashMap/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/01/30/Scrapy学习（一）-入门/"/>
 
 
 
 
 
-  <title> HashMap,Hashtable,ConcurrentHashMap,SynchronizedMap的原理与区别 | 四畳半神话大系 </title>
+  <title> Scrapy学习（二） 入门 | 四畳半神话大系 </title>
   <meta name="baidu-site-verification" content="UqNuoDzFTg" />
 </head>
 
@@ -264,7 +264,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article" test>
-  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/07/了解HashMap/">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/01/30/Scrapy学习（一）-入门/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Amoyiki">
@@ -288,7 +288,7 @@
             
             
               
-                HashMap,Hashtable,ConcurrentHashMap,SynchronizedMap的原理与区别
+                Scrapy学习（二） 入门
               
             
           </h1>
@@ -301,8 +301,8 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-07T10:28:18+08:00">
-                2016-12-07
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-30T22:12:13+08:00">
+                2017-01-30
               </time>
             
 
@@ -320,8 +320,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
                   </a>
                 </span>
 
@@ -335,8 +335,8 @@
             
               <span class="post-comments-count">
                 <span class="post-meta-divider">|</span>
-                <a href="/2016/12/07/了解HashMap/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/07/了解HashMap/" itemprop="commentCount"></span>
+                <a href="/2017/01/30/Scrapy学习（一）-入门/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/30/Scrapy学习（一）-入门/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -367,11 +367,38 @@
       
 
       
-        <h2 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h2><h3 id="HashMap的碰撞处理"><a href="#HashMap的碰撞处理" class="headerlink" title="HashMap的碰撞处理"></a>HashMap的碰撞处理</h3><p>HashMap通过hashCode()方法来确定元素存储的bucketIndex位置，不同的Key有概率hash是相同的。<br>两个不同Key的hash值相同时，HashMap通过单链表方式，将新元素加入链表表头，通过next指向原有元素。<br><a id="more"></a><br><strong> 在JDK1.8版本中，只要bucket中的链表长度超过阈值（8）时，会将链表转化为红黑树</strong><br>在JDK1.7中HashMap的put方法源码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> V <span class="title">put</span><span class="params">(K key, V value)</span> </span>&#123;</span><br><span class="line">       ...</span><br><span class="line">       <span class="comment">//处理Key为null</span></span><br><span class="line">       <span class="keyword">if</span> (key == <span class="keyword">null</span>)</span><br><span class="line">           <span class="keyword">return</span> putForNullKey(value);</span><br><span class="line">       <span class="comment">//得到key的hash码</span></span><br><span class="line">       <span class="keyword">int</span> hash = hash(key);</span><br><span class="line">       <span class="comment">//由hash码获取bucketIndex下标</span></span><br><span class="line">       <span class="keyword">int</span> i = indexFor(hash, table.length);</span><br><span class="line">       <span class="comment">//取出bucketIndex上元素，形成单链表</span></span><br><span class="line">       <span class="keyword">for</span> (Entry&lt;K,V&gt; e = table[i]; e != <span class="keyword">null</span>; e = e.next) &#123;</span><br><span class="line">           Object k;</span><br><span class="line">           <span class="comment">//hash码相同时且对象相同时</span></span><br><span class="line">           <span class="keyword">if</span> (e.hash == hash &amp;&amp; ((k = e.key) == key || key.equals(k))) &#123;</span><br><span class="line">               <span class="comment">//替换旧值</span></span><br><span class="line">               V oldValue = e.value;</span><br><span class="line">               e.value = value;</span><br><span class="line">               e.recordAccess(<span class="keyword">this</span>);</span><br><span class="line">               <span class="keyword">return</span> oldValue;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="comment">//key不存在，加入新元素</span></span><br><span class="line">       modCount++;</span><br><span class="line">       addEntry(hash, key, value, i);</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="为什么HashMap线程不安全"><a href="#为什么HashMap线程不安全" class="headerlink" title="为什么HashMap线程不安全"></a>为什么HashMap线程不安全</h3><ol>
-<li>并发时，多线程同时操作使用put方法添加元素<br>，如果发生碰撞，可能会导致两个值添加到同一位置，致使最终有一个值被覆盖</li>
-<li>多线程使用HashMap进行扩容时，可能会形成循环链路，详情可以看看<a href="http://coolshell.cn/articles/9606.html" target="_blank" rel="external">Java HashMap的死循环</a></li>
-</ol>
+        <h2 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h2><p>接上篇<a href="http://www.amoyiki.com/2017/01/29/Scrapy%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89-%E5%AE%89%E8%A3%85/" target="_blank" rel="external">Scrapy学习（一） 安装</a>，安装后，我们利用一个简单的例子来熟悉如何使用Scrapy创建一个爬虫项目。<br><a id="more"></a></p>
+<h3 id="创建一个Scrapy项目"><a href="#创建一个Scrapy项目" class="headerlink" title="创建一个Scrapy项目"></a>创建一个Scrapy项目</h3><p>在已配置好的环境下输入</p>
+<blockquote>
+<p>scrapy startproject dmoz</p>
+</blockquote>
+<p>系统将在当前目录生成一个myproject的项目文件。该文件的目录结构如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">dmoz/    # 项目根目录</span><br><span class="line">   scrapy.cfg    # 项目配置文件</span><br><span class="line">   dmoz/    # 项目模块</span><br><span class="line">       __init__.py</span><br><span class="line">        items.py    # 项目item文件，有点类似Django中的模型</span><br><span class="line">        pipelines.py    # 项目pipelines文件，负责数据的操作和存储</span><br><span class="line">        settings.py    # 项目的设置文件.</span><br><span class="line">        spiders/    # 项目spider目录，编写的爬虫脚步都放此目录下</span><br><span class="line">            __init__.py</span><br></pre></td></tr></table></figure></p>
+<p>接下来我们以<code>dmoz.org</code>为爬取目标。开始变现简单的爬虫项目。</p>
+<h3 id="编写items"><a href="#编写items" class="headerlink" title="编写items"></a>编写items</h3><p>在items.py中编写我们所需的数据的模型<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scrapy.item <span class="keyword">import</span> Item, Field</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Website</span><span class="params">(Item)</span>:</span></span><br><span class="line">    name = Field()</span><br><span class="line">    description = Field()</span><br><span class="line">    url = Field()</span><br></pre></td></tr></table></figure></p>
+<p>这个模型用来填充我们爬取的数据</p>
+<h3 id="编写Spider"><a href="#编写Spider" class="headerlink" title="编写Spider"></a>编写Spider</h3><p>在spiders文件下新建爬虫文件。这部分才是业务的核心部分。<br>首先创建一个继承<code>scrapy.spiders.Spider</code>的类<br>并且定义如下三个属性</p>
+<ul>
+<li>name 标识spider</li>
+<li>start_urls 启动爬虫时进行爬取的url列表，默认为空</li>
+<li>parse() 每个初始的url下载后的response都会传到该方法内，在这个方法里可以对数据进行处理。 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scrapy.spiders <span class="keyword">import</span> Spider</span><br><span class="line"><span class="keyword">from</span> scrapy.selector <span class="keyword">import</span> Selector</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> dirbot.items <span class="keyword">import</span> Website</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DmozSpider</span><span class="params">(Spider)</span>:</span></span><br><span class="line">    name = <span class="string">"dmoz"</span></span><br><span class="line">    allowed_domains = [<span class="string">"dmoz.org"</span>]</span><br><span class="line">    start_urls = [</span><br><span class="line">        <span class="string">"http://www.dmoz.org/Computers/Programming/Languages/Python/Books/"</span>,</span><br><span class="line">        <span class="string">"http://www.dmoz.org/Computers/Programming/Languages/Python/Resources/"</span>,</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        sites = response.css(<span class="string">'#site-list-content &gt; div.site-item &gt; div.title-and-desc'</span>)</span><br><span class="line">        items = []</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> site <span class="keyword">in</span> sites:</span><br><span class="line">            item = Website()</span><br><span class="line">            item[<span class="string">'name'</span>] = site.css(</span><br><span class="line">                <span class="string">'a &gt; div.site-title::text'</span>).extract_first().strip()</span><br><span class="line">            item[<span class="string">'url'</span>] = site.xpath(</span><br><span class="line">                <span class="string">'a/@href'</span>).extract_first().strip()</span><br><span class="line">            item[<span class="string">'description'</span>] = site.css(</span><br><span class="line">                <span class="string">'div.site-descr::text'</span>).extract_first().strip()</span><br><span class="line">            items.append(item)</span><br><span class="line">        <span class="keyword">return</span> items</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>其中值得注意的是，在<code>parse</code>方法内，我们可以用Selector选择器来提取网站中我们所需的数据。提取的方式有几种。</p>
+<ul>
+<li>xpath() 传入xpath表达式获取节点值</li>
+<li>css() 传入css表达式获取节点值</li>
+<li>re() 传入正则表达式获取节点值 # 此方法本人未测试</li>
+</ul>
+<h3 id="运行并保存数据"><a href="#运行并保存数据" class="headerlink" title="运行并保存数据"></a>运行并保存数据</h3><p>接下来我们运行爬虫，并将爬取的数据存储到json中</p>
+<blockquote>
+<p>scrapy crawl dmoz -o items.json</p>
+</blockquote>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>在运行爬虫的过程中，我遇到了如下报错：</p>
+<blockquote>
+<p>KeyError: ‘Spider not found: dmoz</p>
+</blockquote>
+<p>这个是因为我的spider类中设置的name的值和我<code>scrapy crawl</code>运行的spider不一致导致的。</p>
+<p>具体代码详见：<br><a href="https://github.com/amoyiki/LearnedAndProTest/tree/master/dirbot" target="_blank" rel="external">scrapy入门项目</a></p>
 
       
     </div>
@@ -397,6 +424,8 @@
           
             <a href="/tags/学习/" rel="tag"># 学习</a>
           
+            <a href="/tags/Scrapy/" rel="tag"># Scrapy</a>
+          
         </div>
       
 
@@ -404,8 +433,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/12/06/Java垃圾回收/" rel="next" title="Java垃圾回收">
-                <i class="fa fa-chevron-left"></i> Java垃圾回收
+              <a href="/2017/01/29/Scrapy学习（一）-安装/" rel="next" title="Scrapy学习（一） 安装">
+                <i class="fa fa-chevron-left"></i> Scrapy学习（一） 安装
               </a>
             
           </div>
@@ -413,10 +442,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/12/07/LeetCode-303-Range-Sum-Query-Immutable/" rel="prev" title="[LeetCode]303. Range Sum Query - Immutable">
-                [LeetCode]303. Range Sum Query - Immutable <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -442,8 +467,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/12/07/了解HashMap/"
-           data-title="HashMap,Hashtable,ConcurrentHashMap,SynchronizedMap的原理与区别" data-url="http://yoursite.com/2016/12/07/了解HashMap/">
+      <div class="ds-thread" data-thread-key="2017/01/30/Scrapy学习（一）-入门/"
+           data-title="Scrapy学习（二） 入门" data-url="http://yoursite.com/2017/01/30/Scrapy学习（一）-入门/">
       </div>
     
   </div>
@@ -560,7 +585,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap"><span class="nav-number">1.</span> <span class="nav-text">HashMap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap的碰撞处理"><span class="nav-number">1.1.</span> <span class="nav-text">HashMap的碰撞处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么HashMap线程不安全"><span class="nav-number">1.2.</span> <span class="nav-text">为什么HashMap线程不安全</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#快速入门"><span class="nav-number">1.</span> <span class="nav-text">快速入门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一个Scrapy项目"><span class="nav-number">1.1.</span> <span class="nav-text">创建一个Scrapy项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编写items"><span class="nav-number">1.2.</span> <span class="nav-text">编写items</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编写Spider"><span class="nav-number">1.3.</span> <span class="nav-text">编写Spider</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行并保存数据"><span class="nav-number">1.4.</span> <span class="nav-text">运行并保存数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他"><span class="nav-number">1.5.</span> <span class="nav-text">其他</span></a></li></ol></li></ol></div>
             
 
           </div>
