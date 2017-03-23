@@ -1,69 +1,31 @@
-<!doctype html>
-
-
-
-  
-
-
-<html class="theme-next pisces use-motion" lang="zh-Hans">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    
+
+    
+
+    
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Hexo, NexT" />
-
-
-
-
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.0" />
-
-
-
-
-
-
-<meta name="description" content="很早之前就想过要用Chrome扩展开发一些实用的，或者有意思扩展。今天在看了segmentfault的技术周刊后，决定先按照别人写过的东西去抄一遍模仿的做一遍。
+    <meta charset="utf-8">
+    
+    
+    
+    <title>编写一个Chrome extension--网页二维码生成 | 四畳半神话大系 | 圈地自萌</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="">
+    <meta name="description" content="很早之前就想过要用Chrome扩展开发一些实用的，或者有意思扩展。今天在看了segmentfault的技术周刊后，决定先按照别人写过的东西去抄一遍模仿的做一遍。
 
 本篇文章是看了从小目标开始，编写一个简洁的二维码chrome扩展模仿的。这篇文章写得很详细。我主要写写自己模仿过程中的一些问题。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="编写一个Chrome extension--网页二维码生成">
-<meta property="og:url" content="http://yoursite.com/2016/12/13/编写一个Chrome-extension-网页二维码生成/index.html">
+<meta property="og:url" content="http://amoyiki.com/2016/12/13/编写一个Chrome-extension-网页二维码生成/index.html">
 <meta property="og:site_name" content="四畳半神话大系">
 <meta property="og:description" content="很早之前就想过要用Chrome扩展开发一些实用的，或者有意思扩展。今天在看了segmentfault的技术周刊后，决定先按照别人写过的东西去抄一遍模仿的做一遍。
 
@@ -77,306 +39,163 @@
 
 本篇文章是看了从小目标开始，编写一个简洁的二维码chrome扩展模仿的。这篇文章写得很详细。我主要写写自己模仿过程中的一些问题。">
 <meta name="twitter:image" content="http://oi6538cys.bkt.clouddn.com/chrome_extension_qrcode01.png">
-
-
-
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Pisces',
-    sidebar: {"position":"left","display":"post"},
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-
-  <link rel="canonical" href="http://yoursite.com/2016/12/13/编写一个Chrome-extension-网页二维码生成/"/>
-
-
-
-
-
-  <title> 编写一个Chrome extension--网页二维码生成 | 四畳半神话大系 </title>
-  <meta name="baidu-site-verification" content="UqNuoDzFTg" />
+    
+        <link rel="alternative" href="/atom.xml" title="四畳半神话大系" type="application/atom+xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.4.14">
+    <script>window.lazyScripts=[]</script>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body>
+    <div id="loading" class="active"></div>
 
-  
-
-
-
-  <script type="text/javascript">
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "https://hm.baidu.com/hm.js?c3916ebb87080111f91966b1291316d7";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-
-
-
-
-
-
-
-
-  
-  
-    
-  
-
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-meta ">
-  
-
-  <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">四畳半神话大系</span>
-      <span class="logo-line-after"><i></i></span>
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
     </a>
-  </div>
-  <p class="site-subtitle"></p>
-</div>
-
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
-</div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            首页
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
-            
-            分类
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-about">
-          <a href="/about" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
-            
-            关于
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            归档
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            标签
-          </a>
-        </li>
-      
-    </ul>
-  
-
-  
-    <div class="site-search">
-      
-  <div class="popup">
- <span class="search-icon fa fa-search"></span>
- <input type="text" id="local-search-input">
- <div id="local-search-result"></div>
- <span class="popup-btn-close">close</span>
-</div>
-
-
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/images/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">amoyiki</h5>
+          <a href="mailto:amoyiki#gmail.com" title="amoyiki#gmail.com" class="mail">amoyiki#gmail.com</a>
+        </hgroup>
+      </div>
     </div>
-  
-</nav>
-
-
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
         
-        <div class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger"  style="margin-left: 70%;display: block;">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i>搜索 <br />
-            
-          </a>
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/amoyiki" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-link"></i>
+                About
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">编写一个Chrome extension--网页二维码生成</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
         </div>
         
-          <div id="content" class="content">
-            
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
 
-  <div id="posts" class="posts-expand">
+    <div class="container fade-scale">
+        <h1 class="title">编写一个Chrome extension--网页二维码生成</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2016-12-13T14:11:33.000Z" itemprop="datePublished" class="page-time">
+  2016-12-13
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Chrome-extension/">Chrome extension</a></li></ul>
+
+            
+        </h5>
+    </div>
+
     
 
-  
+</header>
 
-  
-  
-  
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article" test>
-  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/13/编写一个Chrome-extension-网页二维码生成/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Amoyiki">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/avatar.jpg">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="四畳半神话大系">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="四畳半神话大系" src="">
-    </span>
-  </span>
-
+<div class="container body-wrap">
     
-      <header class="post-header">
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Chrome-extension基础"><span class="post-toc-number">1.</span> <span class="post-toc-text">Chrome extension基础</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#编写过程"><span class="post-toc-number">2.</span> <span class="post-toc-text">编写过程</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#首先编写manifest-json"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">首先编写manifest.json</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#接下来就要编写扩展弹出页面popup-html文件"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">接下来就要编写扩展弹出页面popup.html文件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#编写相应的popup-js文件"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">编写相应的popup.js文件</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#后续"><span class="post-toc-number">3.</span> <span class="post-toc-text">后续</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#修改popup-html文件"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">修改popup.html文件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#动态获取网页icon"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">动态获取网页icon</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-编写一个Chrome-extension-网页二维码生成"
+  class="post-article article-type-post fade" itemprop="blogPost">
 
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                编写一个Chrome extension--网页二维码生成
-              
-            
-          </h1>
-        
-
+    <div class="post-card">
+        <h1 class="post-card-title">编写一个Chrome extension--网页二维码生成</h1>
         <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-13T22:11:33+08:00">
-                2016-12-13
-              </time>
-            
+            <time class="post-time" title="2016年12月13日 22:11" datetime="2016-12-13T14:11:33.000Z"  itemprop="datePublished">2016-12-13</time>
 
             
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Chrome-extension/">Chrome extension</a></li></ul>
+
+
 
             
-          </span>
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
 
-          
-            <span class="post-category" >
-              <span class="post-meta-divider">|</span>
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Chrome-extension/" itemprop="url" rel="index">
-                    <span itemprop="name">Chrome extension</span>
-                  </a>
-                </span>
 
-                
-                
-              
-            </span>
-          
-
-          
             
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <a href="/2016/12/13/编写一个Chrome-extension-网页二维码生成/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/13/编写一个Chrome-extension-网页二维码生成/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-            <span class="post-meta-divider">|</span>
-            <span class="page-pv"><i class="fa fa-file-o"></i>
-            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
-            </span>
-          
-
-          
 
         </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <blockquote>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <blockquote>
 <p>很早之前就想过要用Chrome扩展开发一些实用的，或者有意思扩展。今天在看了<code>segmentfault</code>的技术周刊后，决定先按照别人写过的东西去<del>抄一遍</del>模仿的做一遍。</p>
 </blockquote>
 <p>本篇文章是看了<a href="https://segmentfault.com/a/1190000007594008" target="_blank" rel="external">从小目标开始，编写一个简洁的二维码chrome扩展</a>模仿的。这篇文章写得很详细。我主要写写自己模仿过程中的一些问题。<br><a id="more"></a></p>
@@ -389,512 +208,291 @@
 <h3 id="首先编写manifest-json"><a href="#首先编写manifest-json" class="headerlink" title="首先编写manifest.json"></a>首先编写<code>manifest.json</code></h3><p>这是所有扩展的入口文件。看到后缀我们就知道这文件的语法结构必须符合json的写法。Chrome 扩展必须包含的属性有<code>name</code>、<code>version</code>、<code>manifest_version</code>。其他可选属性包括：<code>background</code>、<code>permissions</code>、<code>browser_action</code>、<code>page_action</code>、<code>options_page</code>、<code>content_scripts</code>等等。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="comment">//目前Chrome版本为2</span></span><br><span class="line">    <span class="string">"manifest_version"</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="comment">//扩展名称</span></span><br><span class="line">    <span class="string">"name"</span>: <span class="string">"QRcode"</span>,</span><br><span class="line">    <span class="comment">//扩展版本，可自定义</span></span><br><span class="line">    <span class="string">"version"</span>: <span class="string">"1.0"</span>,</span><br><span class="line">    <span class="comment">//扩展描述，显示在扩展程序中</span></span><br><span class="line">    <span class="string">"description"</span>: <span class="string">"简洁的二维码生成器"</span>,</span><br><span class="line">    <span class="comment">//显示在扩展程序中的图标</span></span><br><span class="line">    <span class="string">"icons"</span>: &#123;</span><br><span class="line">        <span class="string">"16"</span>: <span class="string">"images/icon16.png"</span>,</span><br><span class="line">        <span class="string">"128"</span>: <span class="string">"images/icon128.png"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">//权限声明</span></span><br><span class="line">    <span class="string">"permissions"</span>:[<span class="string">"tabs"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h3 id="接下来就要编写扩展弹出页面popup-html文件"><a href="#接下来就要编写扩展弹出页面popup-html文件" class="headerlink" title="接下来就要编写扩展弹出页面popup.html文件"></a>接下来就要编写扩展弹出页面<code>popup.html</code>文件</h3><p>popup页面在被用户点击时初始化，关闭后就会销毁。所以该页面更多的是用来展示结果的。数据处理则需要<code>background</code>这个属性来声明，这里暂时没用到就不多说了。需要注意的是，应该用css指定popup页面大小。另外，Google不允许HTML和JavaScript混写在同一个文件内。所有我们把相应的JS提出来，在HTML中添加外部引用。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">type</span>=<span class="string">"text/css"</span>&gt;</span><span class="undefined"></span><br><span class="line">    .box &#123;</span><br><span class="line">        height: 200px;</span><br><span class="line">        width: 200px;</span><br><span class="line">        background: #EEE;</span><br><span class="line">    &#125;</span><br><span class="line">    .box .title&#123;</span><br><span class="line">        text-align: center;</span><br><span class="line">        margin-bottom: 10px;</span><br><span class="line">    &#125;</span><br><span class="line"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"box"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"title"</span>&gt;</span>扫描二维码浏览本页面<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">center</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"qrcode"</span> <span class="attr">id</span>=<span class="string">"qrcode"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">center</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"js/qrcode.js"</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"js/popup.js"</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
 <h3 id="编写相应的popup-js文件"><a href="#编写相应的popup-js文件" class="headerlink" title="编写相应的popup.js文件"></a>编写相应的<code>popup.js</code>文件</h3><p><code>chrome.tabs</code>这个API可以与浏览器的标签页系统进行交互。具体API说明参考<a href="http://open.chrome.360.cn/extension_dev/tabs.html" target="_blank" rel="external">标签–扩展开发文档</a><br>通过获取到的标签页url传给<a href="http://code.ciaoca.com/javascript/qrcode/" target="_blank" rel="external">QRCode</a>。通过<code>QRCode.js</code>生成二维码。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">onload=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  chrome.tabs.getSelected(<span class="function"><span class="keyword">function</span>(<span class="params">tab</span>)</span>&#123;</span><br><span class="line">      <span class="comment">//QRCode(元素id,相关配置文件)</span></span><br><span class="line">      <span class="keyword">var</span> qrcode = <span class="keyword">new</span> QRCode(<span class="string">"qrcode"</span>, &#123;</span><br><span class="line">              text: tab.url,</span><br><span class="line">              width: <span class="number">160</span>,</span><br><span class="line">              height: <span class="number">160</span>,</span><br><span class="line">              colorDark : <span class="string">'#000000'</span>,</span><br><span class="line">              colorLight : <span class="string">'#ffffff'</span>,</span><br><span class="line">              <span class="comment">// QRCode的容错级别</span></span><br><span class="line">              correctLevel : QRCode.CorrectLevel.H</span><br><span class="line">            &#125;);</span><br><span class="line">    <span class="built_in">console</span>.log(qrcode);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>到目前为止，一个简单的QRCode生成器边完成了。<br><img src="http://oi6538cys.bkt.clouddn.com/chrome_extension_qrcode01.png" alt="加载自定义插件"><br><img src="http://oi6538cys.bkt.clouddn.com/chrome_extension_qrcode02.png" alt="QRCode"></p>
+<p>到目前为止，一个简单的QRCode生成器边完成了。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://oi6538cys.bkt.clouddn.com/chrome_extension_qrcode01.png" alt="加载自定义插件" title="">
+                </div>
+                <div class="image-caption">加载自定义插件</div>
+            </figure><br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://oi6538cys.bkt.clouddn.com/chrome_extension_qrcode02.png" alt="QRCode" title="">
+                </div>
+                <div class="image-caption">QRCode</div>
+            </figure></p>
 <h2 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h2><p>如果想让二维码中间位置显示自定义图片(如上图)，那么只需要在popup页面自定义一段CSS即可。</p>
 <h3 id="修改popup-html文件"><a href="#修改popup-html文件" class="headerlink" title="修改popup.html文件"></a>修改<code>popup.html</code>文件</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">type</span>=<span class="string">"text/css"</span>&gt;</span><span class="undefined"></span><br><span class="line">    .box &#123;</span><br><span class="line">        height: 200px;</span><br><span class="line">        width: 200px;</span><br><span class="line">        background: #EEE;</span><br><span class="line">        position: relative;</span><br><span class="line">    &#125;</span><br><span class="line">    .box .title&#123;</span><br><span class="line">        text-align: center;</span><br><span class="line">        margin-bottom: 10px;</span><br><span class="line">    &#125;</span><br><span class="line">    .box .qrcode&#123;</span><br><span class="line">        width: 100%;</span><br><span class="line">        height: 100%;</span><br><span class="line">        position: absolute;</span><br><span class="line">    &#125;</span><br><span class="line">    .box .logo &#123;</span><br><span class="line">          top: 80px;</span><br><span class="line">          left: 80px;</span><br><span class="line">          width: 40px;</span><br><span class="line">          height: 40px;</span><br><span class="line">          position: absolute;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"box"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"title"</span>&gt;</span>扫描二维码浏览本页面<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">center</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"qrcode"</span> <span class="attr">id</span>=<span class="string">"qrcode"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">'logo'</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://amoyiki.github.io/images/avatar.jpg"</span> <span class="attr">width</span>=<span class="string">"40"</span> <span class="attr">height</span>=<span class="string">"40"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">center</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"js/qrcode.js"</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"js/popup.js"</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <h3 id="动态获取网页icon"><a href="#动态获取网页icon" class="headerlink" title="动态获取网页icon"></a>动态获取网页icon</h3><p>如果想让icon图标随着每个网站不同的icon进行变动的话，就只要利用<code>tab</code>的<code>favIconUrl</code>属性就能得到标签页面的图标url地址,改动如下<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">onload=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  chrome.tabs.getSelected(<span class="function"><span class="keyword">function</span>(<span class="params">tab</span>)</span>&#123;</span><br><span class="line">      <span class="comment">//QRCode(元素id,相关配置文件)</span></span><br><span class="line">      <span class="keyword">var</span> qrcode = <span class="keyword">new</span> QRCode(<span class="string">"qrcode"</span>, &#123;</span><br><span class="line">              text: tab.url,</span><br><span class="line">              width: <span class="number">160</span>,</span><br><span class="line">              height: <span class="number">160</span>,</span><br><span class="line">              colorDark : <span class="string">'#000000'</span>,</span><br><span class="line">              colorLight : <span class="string">'#ffffff'</span>,</span><br><span class="line">              <span class="comment">// QRCode的容错级别</span></span><br><span class="line">              correctLevel : QRCode.CorrectLevel.H</span><br><span class="line">            &#125;);</span><br><span class="line">    <span class="keyword">if</span> (tab.favIconUrl) &#123;<span class="comment">//tab有图标的情况下动态赋值</span></span><br><span class="line">      <span class="keyword">var</span> img = <span class="built_in">document</span>.getElementsByTagName(<span class="string">"img"</span>)[<span class="number">1</span>].src = tab.favIconUrl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(img);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>详细代码可以查看<a href="https://github.com/amoyiki/LearnedAndProTest/tree/master/QRCode" target="_blank" rel="external">github源码地址</a></p>
 
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2016/12/12/LeetCode-290-Word-Pattern/" rel="next" title="[LeetCode]290. Word Pattern">
-                <i class="fa fa-chevron-left"></i> [LeetCode]290. Word Pattern
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/12/15/git技巧-gitignore配置/" rel="prev" title="git技巧--gitignore配置">
-                git技巧--gitignore配置 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
         </div>
-      
 
-      
-      
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2016-12-14T14:08:18.524Z" itemprop="dateUpdated">2016年12月14日 22:08</time>
+</span><br>
+
+
+        这里写留言或版权声明：<a href="/2016/12/13/编写一个Chrome-extension-网页二维码生成/" target="_blank" rel="external">http://amoyiki.com/2016/12/13/编写一个Chrome-extension-网页二维码生成/</a>
+    </div>
+    <footer>
+        <a href="http://amoyiki.com">
+            <img src="/images/avatar.jpg" alt="amoyiki">
+            amoyiki
+        </a>
     </footer>
-  </article>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
 
 
 
-    <div class="post-spread">
-      
-    </div>
-  </div>
+        <div class="post-footer">
+            
 
-
-          </div>
-          
-
-
-          
-  <div class="comments" id="comments">
+            
+<div class="page-share-wrap">
     
-      <div class="ds-thread" data-thread-key="2016/12/13/编写一个Chrome-extension-网页二维码生成/"
-           data-title="编写一个Chrome extension--网页二维码生成" data-url="http://yoursite.com/2016/12/13/编写一个Chrome-extension-网页二维码生成/">
-      </div>
-    
-  </div>
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://amoyiki.com/2016/12/13/编写一个Chrome-extension-网页二维码生成/&title=《编写一个Chrome extension--网页二维码生成》 — 四畳半神话大系&pic=http://amoyiki.com/images/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://amoyiki.com/2016/12/13/编写一个Chrome-extension-网页二维码生成/&title=《编写一个Chrome extension--网页二维码生成》 — 四畳半神话大系&source=
+很早之前就想过要用Chrome扩展开发一些实用的，或者有意思扩展。今天在看了segmentfault的技术周刊后，决定先按照别人写过的东西去抄一遍模仿的..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://amoyiki.com/2016/12/13/编写一个Chrome-extension-网页二维码生成/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《编写一个Chrome extension--网页二维码生成》 — 四畳半神话大系&url=http://amoyiki.com/2016/12/13/编写一个Chrome-extension-网页二维码生成/&via=http://amoyiki.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://amoyiki.com/2016/12/13/编写一个Chrome-extension-网页二维码生成/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
 
 
         </div>
-        
-          
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    <div class="waves-block waves-effect prev">
+      <a href="/2016/12/15/git技巧-gitignore配置/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">git技巧--gitignore配置</h4>
+      </a>
     </div>
-  </div>
+  
 
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/images/avatar.jpg"
-               alt="Amoyiki" />
-          <p class="site-author-name" itemprop="name">Amoyiki</p>
-          <p class="site-description motion-element" itemprop="description">个人BLOG</p>
-        </div>
-        <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="/archives">
-              <span class="site-state-item-count">36</span>
-              <span class="site-state-item-name">日志</span>
-            </a>
-          </div>
-
-          
-            <div class="site-state-item site-state-categories">
-              <a href="/categories">
-                <span class="site-state-item-count">12</span>
-                <span class="site-state-item-name">分类</span>
-              </a>
-            </div>
-          
-
-          
-            <div class="site-state-item site-state-tags">
-              <a href="/tags">
-                <span class="site-state-item-count">8</span>
-                <span class="site-state-item-name">标签</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-
-        <div class="links-of-author motion-element">
-          
-            
-              <span class="links-of-author-item">
-                <a href="http://www.zhihu.com/people/amoyiki" target="_blank" title="Zhihu">
-                  
-                    <i class="fa fa-fw fa-globe"></i>
-                  
-                  Zhihu
-                </a>
-              </span>
-            
-              <span class="links-of-author-item">
-                <a href="http://weibo.com/amoyiki" target="_blank" title="Weibo">
-                  
-                    <i class="fa fa-fw fa-weibo"></i>
-                  
-                  Weibo
-                </a>
-              </span>
-            
-          
-        </div>
-
-        
-        
-
-        
-        
-
-        
-
-
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Chrome-extension基础"><span class="nav-number">1.</span> <span class="nav-text">Chrome extension基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编写过程"><span class="nav-number">2.</span> <span class="nav-text">编写过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#首先编写manifest-json"><span class="nav-number">2.1.</span> <span class="nav-text">首先编写manifest.json</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接下来就要编写扩展弹出页面popup-html文件"><span class="nav-number">2.2.</span> <span class="nav-text">接下来就要编写扩展弹出页面popup.html文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编写相应的popup-js文件"><span class="nav-number">2.3.</span> <span class="nav-text">编写相应的popup.js文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后续"><span class="nav-number">3.</span> <span class="nav-text">后续</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#修改popup-html文件"><span class="nav-number">3.1.</span> <span class="nav-text">修改popup.html文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态获取网页icon"><span class="nav-number">3.2.</span> <span class="nav-text">动态获取网页icon</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2016/12/12/LeetCode-290-Word-Pattern/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">[LeetCode]290. Word Pattern</h4>
+      </a>
     </div>
-  </aside>
+  
+</nav>
 
+
+
+    
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
 
         
-      </div>
+    </ul>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            <span>博客内容遵循 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享 署名 - 非商业性 - 相同方式共享 4.0协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>四畳半神话大系 &copy; 2015 - 2017</span>
+        </p>
+    </div>
+</footer>
+
     </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
 
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright" >
-  
-  &copy;  2015 - 
-  <span itemprop="copyrightYear">2017</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Amoyiki</span>
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://amoyiki.com/2016/12/13/编写一个Chrome-extension-网页二维码生成/&title=《编写一个Chrome extension--网页二维码生成》 — 四畳半神话大系&pic=http://amoyiki.com/images/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://amoyiki.com/2016/12/13/编写一个Chrome-extension-网页二维码生成/&title=《编写一个Chrome extension--网页二维码生成》 — 四畳半神话大系&source=
+很早之前就想过要用Chrome扩展开发一些实用的，或者有意思扩展。今天在看了segmentfault的技术周刊后，决定先按照别人写过的东西去抄一遍模仿的..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://amoyiki.com/2016/12/13/编写一个Chrome-extension-网页二维码生成/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《编写一个Chrome extension--网页二维码生成》 — 四畳半神话大系&url=http://amoyiki.com/2016/12/13/编写一个Chrome-extension-网页二维码生成/&via=http://amoyiki.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://amoyiki.com/2016/12/13/编写一个Chrome-extension-网页二维码生成/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACuElEQVR42u3a0WojMQwF0Pz/T3dhX8sk91rWtgtnnkqaenxcsISk1yt+vv4+3z/5/vnTb5++mb/3bAU8PDy8Dd7X2yfhvX/x+zWfVs7/9sNO8PDw8NZ4+aWcvCwJLcl1nx/34+d4eHh4P8prv9km1kkowsPDw/u/eG0Z4n3S3G4XDw8P77fxkgu9LRzkpYSEvV5rwcPDw4t5k0bUT/282N/Dw8PDG3TV87JCHkKSdfIVPuwTDw8Pb4GXFBeSgaq21Js00tq/qreLh4eHN+DdSqbzckO7rbwxVoPx8PDwBry2rXVWZm2bZMkeov8bHh4e3iVekky3ra+7SfYojcbDw8Nb4J2VAJKlz44sD0LFKBgeHh7eMq+9lNsxrLPycZuCPybWeHh4eGNeGwDy1Pas8d8WaqPOHh4eHt4yr93KZOWzplpxrHh4eHgLvLxQ27b220Q5T6brnePh4eFd5bUDTJMC6xkgCR6P6+Dh4eH9c15eqpgMTuXjXPkI1+vs1PHw8PBKXv6anDpp/J8dJR4eHt42b1J6mCfWydU/3xUeHh7eXd5ZCnv3adtpRYDBw8PDW+C1Lau8bZ+UZYuywhkMDw8Pb4GXp8Vnzft8OGDlWPHw8PDWbuw2gb6VZJ9d/fUh4uHh4a3x2iw0HxrIU+R5sCm6fHh4eHgDXltOzUeg2sCTw+oSMx4eHt5VXl48PRvASgJGXgKuCxl4eHh4a7xbKXISNvL0/fJsAh4eHt4lWP68T39vFWHPws+HmQg8PDy8S7xbzapJiTYfLMgPCw8PD2+b16bCeVLeFnnPGmAfwhgeHh7eGi+/lCel1flR1sVoPDw8vF/Mm3x/MsTwmr8GDw8Pb42XDxlMOlMt7MMKeHh4eGu8vIiQN5/mw6kJoB5XxcPDwxvz5iWGWyl4Po5weYAADw8PL+X9AYRNILUXgH4FAAAAAElFTkSuQmCC" alt="微信分享二维码">
 </div>
 
 
-<div class="powered-by">
-  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
-</div>
-
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
-  </a>
-</div>
 
 
-        
-
-<div class="busuanzi-count">
-
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-  
-    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
-  
-
-  
-  
-</div>
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 
 
 
-        
-      </div>
-    </footer>
-
-    <div class="back-to-top">
-      <i class="fa fa-arrow-up"></i>
-    </div>
-  </div>
-
-  
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
 </script>
 
+<script src="/js/main.min.js?v=1.4.14"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.4.14" async></script>
 
 
 
 
 
 
-
-
-  
-
-
-
-  
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
 
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
-
-
-
-  
-
-  
-    
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"amoyiki"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-  
-    
-    
-    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
-    <script src="/js/src/hook-duoshuo.js"></script>
-  
-
-
-
-
-
-
-
-
-  
-  
-  <script type="text/javascript">
-    // Popup Window;
-    var isfetched = false;
-    // Search DB path;
-    var search_path = "search.xml";
-    if (search_path.length == 0) {
-      search_path = "search.xml";
-    }
-    var path = "/" + search_path;
-    // monitor main search box;
-
-    function proceedsearch() {
-      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
-      $('.popup').toggle();
-    }
-    // search function;
-    var searchFunc = function(path, search_id, content_id) {
-      'use strict';
-      $.ajax({
-        url: path,
-        dataType: "xml",
-        async: true,
-        success: function( xmlResponse ) {
-          // get the contents from search data
-          isfetched = true;
-          $('.popup').detach().appendTo('.header-inner');
-          var datas = $( "entry", xmlResponse ).map(function() {
-            return {
-              title: $( "title", this ).text(),
-              content: $("content",this).text(),
-              url: $( "url" , this).text()
-            };
-          }).get();
-          var $input = document.getElementById(search_id);
-          var $resultContent = document.getElementById(content_id);
-          $input.addEventListener('input', function(){
-            var matchcounts = 0;
-            var str='<ul class=\"search-result-list\">';
-            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
-            $resultContent.innerHTML = "";
-            if (this.value.trim().length > 1) {
-              // perform local searching
-              datas.forEach(function(data) {
-                var isMatch = false;
-                var content_index = [];
-                var data_title = data.title.trim().toLowerCase();
-                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
-                var data_url = decodeURIComponent(data.url);
-                var index_title = -1;
-                var index_content = -1;
-                var first_occur = -1;
-                // only match artiles with not empty titles and contents
-                if(data_title != '') {
-                  keywords.forEach(function(keyword, i) {
-                    index_title = data_title.indexOf(keyword);
-                    index_content = data_content.indexOf(keyword);
-                    if( index_title >= 0 || index_content >= 0 ){
-                      isMatch = true;
-                      if (i == 0) {
-                        first_occur = index_content;
-                      }
-                    }
-
-                  });
-                }
-                // show search results
-                if (isMatch) {
-                  matchcounts += 1;
-                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
-                  var content = data.content.trim().replace(/<[^>]+>/g,"");
-                  if (first_occur >= 0) {
-                    // cut out 100 characters
-                    var start = first_occur - 20;
-                    var end = first_occur + 80;
-                    if(start < 0){
-                      start = 0;
-                    }
-                    if(start == 0){
-                      end = 50;
-                    }
-                    if(end > content.length){
-                      end = content.length;
-                    }
-                    var match_content = content.substring(start, end);
-                    // highlight all keywords
-                    keywords.forEach(function(keyword){
-                      var regS = new RegExp(keyword, "gi");
-                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
-                    });
-
-                    str += "<p class=\"search-result\">" + match_content +"...</p>"
-                  }
-                  str += "</li>";
-                }
-              })};
-            str += "</ul>";
-            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
-            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
-            $resultContent.innerHTML = str;
-          });
-          proceedsearch();
-        }
-      });}
-
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched == false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
-    });
-
-    $('.popup-btn-close').click(function(e){
-      $('.popup').hide();
-      $(".popoverlay").remove();
-      $('body').css('overflow', '');
-    });
-    $('.popup').click(function(e){
-      e.stopPropagation();
-    });
-  </script>
-
-
-  
-
-  
-
-  
 <script>
-(function(){
-    var bp = document.createElement('script');
-    var curProtocol = window.location.protocol.split(':')[0];
-    if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
-    }
-    else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-    }
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
 })();
 </script>
 
-
-  
 
 
 </body>
