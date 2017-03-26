@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://amoyiki.com/"/>
-  <updated>2017-03-23T12:59:33.652Z</updated>
+  <updated>2017-03-26T07:15:29.751Z</updated>
   <id>http://amoyiki.com/</id>
   
   <author>
@@ -14,6 +14,40 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>2017年，学前端并不太迟。</title>
+    <link href="http://amoyiki.com/2017/03/26/2017%E5%B9%B4%EF%BC%8C%E5%AD%A6%E5%89%8D%E7%AB%AF%E5%B9%B6%E4%B8%8D%E5%A4%AA%E8%BF%9F%E3%80%82/"/>
+    <id>http://amoyiki.com/2017/03/26/2017年，学前端并不太迟。/</id>
+    <published>2017-03-26T06:59:13.000Z</published>
+    <updated>2017-03-26T07:15:29.751Z</updated>
+    
+    <content type="html"><![CDATA[<p>如题所见，今年我想学一下前端方面的知识。<br><del>我知道乱点技能书的恶果，但是挡不住对花花绿绿的前端的兴趣啊</del><br>我希望我的学习成果能</p>
+<ul>
+<li>构建一个webapp</li>
+<li>设计风格偏向 material design</li>
+<li>webapp是个CMS类的（<del>坂道46系相关，是的，我是一个偶像宅</del>）</li>
+</ul>
+<h3 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a>技术选型</h3><p>前端：Vue全家桶<br>后端：Flask</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>Vue现在才刚开始了解，JS，ES6还有一堆包管理构建工具等等都是第一次接触。<br>Flask之前照着书本敲过一些简单的代码，也是刚刚入门的状态。<br>希望能在这个项目上一边做一边学习。</p>
+<p>那么，为期一年。加油~！</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;如题所见，今年我想学一下前端方面的知识。&lt;br&gt;&lt;del&gt;我知道乱点技能书的恶果，但是挡不住对花花绿绿的前端的兴趣啊&lt;/del&gt;&lt;br&gt;我希望我的学习成果能&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;构建一个webapp&lt;/li&gt;
+&lt;li&gt;设计风格偏向 material design&lt;/l
+    
+    </summary>
+    
+      <category term="前端" scheme="http://amoyiki.com/categories/%E5%89%8D%E7%AB%AF/"/>
+    
+    
+      <category term="学习" scheme="http://amoyiki.com/tags/%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
   
   <entry>
     <title>[CareerCup] 1.4 Replace Spaces</title>

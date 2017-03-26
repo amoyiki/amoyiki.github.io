@@ -3,6 +3,13 @@
   
     
     <entry>
+      <title><![CDATA[2017年，学前端并不太迟。]]></title>
+      <url>%2F2017%2F03%2F26%2F2017%E5%B9%B4%EF%BC%8C%E5%AD%A6%E5%89%8D%E7%AB%AF%E5%B9%B6%E4%B8%8D%E5%A4%AA%E8%BF%9F%E3%80%82%2F</url>
+      <content type="text"><![CDATA[如题所见，今年我想学一下前端方面的知识。我知道乱点技能书的恶果，但是挡不住对花花绿绿的前端的兴趣啊我希望我的学习成果能 构建一个webapp 设计风格偏向 material design webapp是个CMS类的（坂道46系相关，是的，我是一个偶像宅） 技术选型前端：Vue全家桶后端：Flask 总结Vue现在才刚开始了解，JS，ES6还有一堆包管理构建工具等等都是第一次接触。Flask之前照着书本敲过一些简单的代码，也是刚刚入门的状态。希望能在这个项目上一边做一边学习。 那么，为期一年。加油~！]]></content>
+    </entry>
+
+    
+    <entry>
       <title><![CDATA[[CareerCup] 1.4 Replace Spaces]]></title>
       <url>%2F2017%2F03%2F20%2FCareerCup-1-4-Replace-Spaces-%E6%9B%BF%E6%8D%A2%E7%A9%BA%E6%A0%BC%2F</url>
       <content type="text"><![CDATA[问题描述将字符串中的空格替换成“%20” 解题思路Java和Python都有相对应的replace方法。但是这么做就没必要写这个题目了。另外如果新建空间来构造也是同样的道理。最科学的方法是in place去改变字符串。思路是，先遍历一遍字符串，算出有多少个空格，然后resize字符串的长度。接下来从后往前遍历，遇到空格就替换成”%20” 具体代码普通方法:123class Solution: def replaceSpace(self,s): return s.replace(' ','%20') 正经方法：1234567891011121314151617181920212223public class Solution &#123; public String replaceSpace(StringBuffer str) &#123; int count = 0; for(int i=0;i&lt;str.length();i++)&#123; if(str.charAt(i)==' ') count++; &#125; int oldindex = str.length()-1; int newlength = str.length() + count*2; int newindex = newlength-1; str.setLength(newlength); for(;oldindex&gt;=0 &amp;&amp; oldindex&lt;newlength;--oldindex)&#123; if(str.charAt(oldindex) == ' ')&#123; str.setCharAt(newindex--, '0'); str.setCharAt(newindex--, '2'); str.setCharAt(newindex--, '%'); &#125;else&#123; str.setCharAt(newindex--, str.charAt(oldindex)); &#125; &#125; return str.toString(); &#125;&#125;]]></content>
